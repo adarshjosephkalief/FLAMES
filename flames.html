@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLAMES</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Subtler nostalgic notebook grid background */
+            background-image:
+                linear-gradient(to right, rgba(230, 230, 230, 0.4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(230, 230, 230, 0.4) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-gradient {
+            background-image: linear-gradient(to right, #f9a8d4 0%, #ec4899 51%, #f9a8d4 100%); /* pink-300 to pink-500 */
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+        .btn-gradient:hover {
+            background-position: right center;
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes animated-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes fadeInScaleUp {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+        @keyframes strike-out {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes highlight-winner {
+            0% { transform: scale(1); color: #9ca3af; /* gray-400 */ }
+            50% { transform: scale(1.5); color: #f472b6; /* pink-400 */ }
+            100% { transform: scale(1.2); color: #ec4899; /* pink-500 */ }
+        }
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+
+        /* --- Animation Classes --- */
+        .animated-bg {
+            background: linear-gradient(-45deg, #fce7f3, #e9d5ff, #dbeafe, #e0f2fe); /* rose-50, purple-200, blue-100, cyan-50 */
+            background-size: 400% 400%;
+            animation: animated-gradient 15s ease infinite;
+        }
+        .animate-fade-in-scale-up { animation: fadeInScaleUp 0.5s ease-out forwards; }
+        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        .strike-through {
+            position: relative;
+            color: #ef4444 !important; /* red-500 */
+            transform: scale(0.9);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        .strike-through::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 2px;
+            background: #ef4444; /* red-500 */
+            animation: strike-out 0.3s ease-out forwards;
+        }
+        .highlight-winner {
+            animation: highlight-winner 0.8s ease-in-out forwards;
+        }
+        #animation-backdrop .floating-icon {
+            position: absolute;
+            bottom: -50px;
+            font-size: 2rem;
+            opacity: 0;
+            animation: float-up 5s linear infinite;
+        }
+    </style>
+</head>
+<body class="h-full animated-bg flex items-center justify-center p-4">
+
+    <div id="animation-backdrop" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></div>
+
+    <main class="w-full max-w-md mx-auto z-10">
+        <!-- Input Card -->
+        <div id="input-card" class="card rounded-2xl shadow-2xl p-8 transition-all duration-500">
+            <div class="text-center mb-8">
+                <h1 class="pacifico text-5xl font-bold text-rose-500">FLAMES</h1>
+                <p class="text-gray-500 mt-2">The classic relationship game</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label for="name1" class="text-sm font-medium text-gray-700">Your Name</label>
+                    <input type="text" id="name1" placeholder="e.g., Priya" class="mt-1 block w-full px-4 py-3 bg-white border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition" maxlength="30">
+                </div>
+                <div>
+                    <label for="name2" class="text-sm font-medium text-gray-700">Their Name</label>
+                    <input type="text" id="name2" placeholder="e.g., Rohan" class="mt-1 block w-full px-4 py-3 bg-white border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-pink-400 transition" maxlength="30">
+                </div>
+            </div>
+            <div class="mt-8">
+                <button id="calculate-btn" class="flex items-center justify-center w-full text-white font-bold py-3 px-4 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 btn-gradient">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                    </svg>
+                    Calculate Relationship
+                </button>
+                <p id="error-message" class="text-center text-red-500 text-sm mt-3 h-4"></p>
+            </div>
+        </div>
+
+        <!-- Calculating Card (initially hidden) -->
+        <div id="calculating-card" class="hidden card rounded-2xl shadow-2xl p-8 text-center animate-fade-in-scale-up">
+            <h2 id="calculating-names" class="text-xl font-bold text-gray-700 mb-6 break-words"></h2>
+            <div id="flames-animation-container" class="flex justify-center items-center space-x-2 text-5xl font-bold text-gray-400">
+                <span data-letter="F">F</span>
+                <span data-letter="L">L</span>
+                <span data-letter="A">A</span>
+                <span data-letter="M">M</span>
+                <span data-letter="E">E</span>
+                <span data-letter="S">S</span>
+            </div>
+             <p id="calculating-message" class="text-gray-500 mt-6 animate-pulse">Determining your fate...</p>
+        </div>
+
+        <!-- Result Card (initially hidden) -->
+        <div id="result-card" class="hidden card rounded-2xl shadow-2xl p-8 text-center">
+             <p class="text-lg text-gray-600 mb-2">The result for</p>
+            <h2 id="result-names" class="text-xl font-bold text-gray-800 mb-4 break-words"></h2>
+            <div id="result-icon" class="text-7xl mb-4"></div>
+            <h3 id="result-text" class="text-5xl font-extrabold mb-2"></h3>
+            <p class="text-gray-500 text-lg mb-8">Relationship</p>
+            <div class="mt-8 grid grid-cols-2 gap-4">
+                 <button id="share-btn" class="w-full bg-pink-100 text-pink-600 font-bold py-3 px-4 rounded-lg shadow-md hover:bg-pink-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                    </svg>
+                    Share App
+                </button>
+                <button id="reset-btn" class="w-full bg-gray-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition-all duration-200">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="absolute bottom-4 text-center w-full text-gray-500 text-sm z-10">Made with <span class="text-rose-400">♡</span> for the 90s kids</footer>
+
+    <script>
+        // DOM Elements
+        const inputCard = document.getElementById('input-card');
+        const calculatingCard = document.getElementById('calculating-card');
+        const calculatingNames = document.getElementById('calculating-names');
+        const calculatingMessage = document.getElementById('calculating-message');
+        const resultCard = document.getElementById('result-card');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const shareBtn = document.getElementById('share-btn');
+        const name1Input = document.getElementById('name1');
+        const name2Input = document.getElementById('name2');
+        const errorMessage = document.getElementById('error-message');
+        const flamesAnimationContainer = document.getElementById('flames-animation-container');
+        const animationBackdrop = document.getElementById('animation-backdrop');
+
+
+        // Result display elements
+        const resultNames = document.getElementById('result-names');
+        const resultIcon = document.getElementById('result-icon');
+        const resultText = document.getElementById('result-text');
+
+        let currentResultData = {};
+
+        const resultMapping = {
+            'F': { text: 'Friends', icon: '🧑‍🤝‍🧑', color: 'text-blue-500' },
+            'L': { text: 'Love', icon: '❤️', color: 'text-red-500' },
+            'A': { text: 'Affection', icon: '🥰', color: 'text-pink-500' },
+            'M': { text: 'Marriage', icon: '💍', color: 'text-yellow-500' },
+            'E': { text: 'Enemies', icon: '😠', color: 'text-gray-700' },
+            'S': { text: 'Siblings', icon: '🏠', color: 'text-green-500' }
+        };
+
+        const fateMessages = [
+            "Reading the stars...",
+            "Consulting the oracle...",
+            "Shuffling the cards of destiny...",
+            "The universe is deciding...",
+            "Pondering your romantic future...",
+            "Let's see what fate holds...",
+            "Spinning the wheel of fortune..."
+        ];
+
+        // --- Event Listeners ---
+        calculateBtn.addEventListener('click', runFlames);
+        name1Input.addEventListener('keypress', (e) => e.key === 'Enter' && name2Input.focus());
+        name2Input.addEventListener('keypress', (e) => e.key === 'Enter' && runFlames());
+        shareBtn.addEventListener('click', shareResult);
+
+        resetBtn.addEventListener('click', () => {
+            resultCard.classList.add('hidden');
+            resultCard.classList.remove('animate-fade-in-scale-up');
+            calculatingCard.classList.add('hidden');
+            inputCard.classList.remove('hidden');
+            animationBackdrop.innerHTML = ''; // Clear animations
+            name1Input.value = '';
+            name2Input.value = '';
+            errorMessage.textContent = '';
+            name1Input.classList.remove('animate-shake');
+            name2Input.classList.remove('animate-shake');
+            
+            flamesAnimationContainer.querySelectorAll('span').forEach(span => {
+                span.classList.remove('strike-through', 'highlight-winner');
+            });
+        });
+
+        // --- Helper Functions ---
+        function toTitleCase(str) {
+            return str.toLowerCase().split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        // --- Core Functions ---
+        function validateInput(name1, name2) {
+            errorMessage.textContent = '';
+            name1Input.classList.remove('animate-shake');
+            name2Input.classList.remove('animate-shake');
+
+            if (!name1 || !name2) {
+                errorMessage.textContent = 'Please enter both names.';
+                if(!name1) name1Input.classList.add('animate-shake');
+                if(!name2) name2Input.classList.add('animate-shake');
+                return false;
+            }
+            if (name1 === name2) {
+                errorMessage.textContent = 'Names cannot be the same.';
+                name1Input.classList.add('animate-shake');
+                name2Input.classList.add('animate-shake');
+                return false;
+            }
+            if (!/^[a-z\s]+$/.test(name1) || !/^[a-z\s]+$/.test(name2)) {
+                errorMessage.textContent = 'Please use only letters and spaces.';
+                if(!/^[a-z\s]+$/.test(name1)) name1Input.classList.add('animate-shake');
+                if(!/^[a-z\s]+$/.test(name2)) name2Input.classList.add('animate-shake');
+                return false;
+            }
+            return true;
+        }
+
+        async function runFlames() {
+            let name1Raw = name1Input.value.trim();
+            let name2Raw = name2Input.value.trim();
+            
+            if (!validateInput(name1Raw.toLowerCase(), name2Raw.toLowerCase())) return;
+
+            // --- Calculation Logic ---
+            let name1 = name1Raw.toLowerCase().replace(/\s/g, '');
+            let name2 = name2Raw.toLowerCase().replace(/\s/g, '');
+            let name1Arr = name1.split('');
+            let name2Arr = name2.split('');
+
+            for (let i = 0; i < name1Arr.length; i++) {
+                for (let j = 0; j < name2Arr.length; j++) {
+                    if (name1Arr[i] === name2Arr[j]) {
+                        name1Arr.splice(i, 1);
+                        name2Arr.splice(j, 1);
+                        i--;
+                        break;
+                    }
+                }
+            }
+
+            const remainingCount = name1Arr.length + name2Arr.length;
+            if (remainingCount === 0) {
+                errorMessage.textContent = "No unique letters found!";
+                return;
+            }
+
+            animationBackdrop.innerHTML = '';
+            const formattedName1 = toTitleCase(name1Raw);
+            const formattedName2 = toTitleCase(name2Raw);
+            calculatingNames.textContent = `${formattedName1} & ${formattedName2}`;
+            
+            const randomMessage = fateMessages[Math.floor(Math.random() * fateMessages.length)];
+            calculatingMessage.textContent = randomMessage;
+
+            inputCard.classList.add('hidden');
+            calculatingCard.classList.remove('hidden');
+
+            const flamesLetters = ['F', 'L', 'A', 'M', 'E', 'S'];
+            let currentIndex = 0;
+            const animationSpans = Array.from(flamesAnimationContainer.querySelectorAll('span'));
+            
+            for (let k = 0; k < 5; k++) {
+                await new Promise(resolve => setTimeout(resolve, 600));
+                
+                currentIndex = (currentIndex + remainingCount - 1) % flamesLetters.length;
+                const letterToRemove = flamesLetters[currentIndex];
+                const spanToRemove = animationSpans.find(span => span.dataset.letter === letterToRemove && !span.classList.contains('strike-through'));
+
+                if(spanToRemove) {
+                   spanToRemove.classList.add('strike-through');
+                }
+                
+                flamesLetters.splice(currentIndex, 1);
+            }
+            
+            const finalResult = flamesLetters[0];
+            const winnerSpan = animationSpans.find(span => span.dataset.letter === finalResult);
+            if (winnerSpan) {
+                winnerSpan.classList.add('highlight-winner');
+            }
+            
+            await new Promise(resolve => setTimeout(resolve, 1200)); 
+            
+            displayResult(finalResult, formattedName1, formattedName2);
+        }
+
+        function createFloatingAnimation(icon) {
+            animationBackdrop.innerHTML = '';
+            for(let i=0; i < 15; i++) {
+                const iconEl = document.createElement('span');
+                iconEl.className = 'floating-icon';
+                iconEl.textContent = icon;
+                iconEl.style.left = `${Math.random() * 100}vw`;
+                iconEl.style.animationDelay = `${Math.random() * 5}s`;
+                iconEl.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                animationBackdrop.appendChild(iconEl);
+            }
+        }
+
+        function displayResult(resultKey, formattedName1, formattedName2) {
+            const resultData = resultMapping[resultKey];
+
+            currentResultData = {
+                names: `${formattedName1} & ${formattedName2}`,
+                resultText: resultData.text,
+                resultIcon: resultData.icon
+            };
+
+            resultNames.textContent = currentResultData.names;
+            resultIcon.textContent = resultData.icon;
+            
+            resultText.className = 'text-5xl font-extrabold mb-2';
+            resultText.classList.add(resultData.color);
+            resultText.textContent = resultData.text;
+
+            calculatingCard.classList.add('hidden');
+            resultCard.classList.remove('hidden');
+            resultCard.classList.add('animate-fade-in-scale-up');
+            createFloatingAnimation(resultData.icon);
+        }
+
+        function shareResult() {
+            const shareText = "Remember the FLAMES game from back in the day? 🔥 I just played this awesome version. Find out your relationship fate! 😂";
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'FLAMES - The Relationship Game',
+                    text: shareText,
+                    url: window.location.href,
+                }).catch((error) => console.log('Error sharing', error));
+            } else {
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const originalShareBtnHTML = shareBtn.innerHTML;
+                    shareBtn.innerHTML = 'Link Copied!';
+                    setTimeout(() => {
+                        shareBtn.innerHTML = originalShareBtnHTML;
+                    }, 2000);
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+    </script>
+</body>
+</html>
+

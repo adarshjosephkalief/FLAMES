@@ -126,11 +126,11 @@
         }
     </style>
 </head>
-<body class="min-h-full animated-bg flex items-center justify-center p-4">
+<body class="min-h-screen animated-bg flex flex-col p-4 sm:p-6 md:p-8">
 
     <div id="animation-backdrop" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></div>
 
-    <main class="w-full max-w-md mx-auto z-10">
+    <main class="w-full max-w-md mx-auto z-10 my-auto">
         <!-- Input Card -->
         <div id="input-card" class="card rounded-2xl shadow-2xl p-8 transition-all duration-500">
             <div class="text-center mb-8">
@@ -181,7 +181,7 @@
             <p class="text-gray-500 text-lg mb-8">Relationship</p>
             <div class="mt-8 grid grid-cols-2 gap-4">
                  <button id="share-btn" class="w-full bg-pink-100 text-pink-600 font-bold py-3 px-4 rounded-lg shadow-md hover:bg-pink-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                       <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
                     </svg>
                     Share App
@@ -193,7 +193,7 @@
         </div>
     </main>
 
-    <footer class="absolute bottom-4 text-center w-full text-gray-500 text-sm z-10">Made with <span class="text-rose-400">♡</span> for the 90s kids</footer>
+    <footer class="text-center w-full text-gray-500 text-sm z-10 pt-4">Made with <span class="text-rose-400">♡</span> for the 90s kids</footer>
 
     <script>
         // DOM Elements
